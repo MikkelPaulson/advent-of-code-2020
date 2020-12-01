@@ -69,15 +69,17 @@ def part2(stdin, stdout, stderr):
     iterations = 0
     for i in range(len(numbers) - 2):
         for j in range(i + 1, len(numbers) - 1):
-            for k in range(j + 1, len(numbers)):
-                iterations += 1
-                if numbers[i] + numbers[j] + numbers[k] == 2020:
-                    stderr.write(
-                        str(numbers[i]) + " + " + str(numbers[j]) + " + "
-                        + str(numbers[k]) + " in " + str(iterations) +
-                        " iterations\n")
-                    stdout.write(
-                        str(numbers[i] * numbers[j] * numbers[k]) + "\n")
-                    return
+            iterations += 1
+            try:
+                k = numbers.index(2020 - numbers[i] - numbers[j])
+                stderr.write(
+                    str(numbers[i]) + " + " + str(numbers[j]) + " + "
+                    + str(numbers[k]) + " in " + str(iterations) +
+                    " iterations\n")
+                stdout.write(
+                    str(numbers[i] * numbers[j] * numbers[k]) + "\n")
+                return
+            except ValueError:
+                pass
 
     raise Exception("No matches found.")
