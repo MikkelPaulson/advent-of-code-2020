@@ -55,7 +55,7 @@ def part1(stdin, stdout, stderr):
 
 
 def part2(stdin, stdout, stderr):
-    """Find three numbers that sum to 2020, then multiple them."""
+    """Find three numbers that sum to 2020, then multiply them."""
 
     numbers = array.array('i')
 
