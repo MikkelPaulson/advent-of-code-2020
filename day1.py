@@ -39,13 +39,17 @@ def part1(stdin, stdout, stderr):
 
     numbers = array.array('i')
 
+    iterations = 0
     for line in stdin:
+        iterations += 1
         number = int(line.strip())
         pair = 2020 - number
 
         try:
             numbers.index(pair)
-            stderr.write(str(number) + " + " + str(pair) + "\n")
+            stderr.write(
+                str(number) + " + " + str(pair) + " in " +
+                str(iterations) + " iterations\n")
             stdout.write(str(number * pair) + "\n")
             return
         except ValueError:
@@ -62,13 +66,16 @@ def part2(stdin, stdout, stderr):
     for line in stdin:
         numbers.append(int(line.strip()))
 
+    iterations = 0
     for i in range(len(numbers) - 2):
         for j in range(i + 1, len(numbers) - 1):
             for k in range(j + 1, len(numbers)):
+                iterations += 1
                 if numbers[i] + numbers[j] + numbers[k] == 2020:
                     stderr.write(
                         str(numbers[i]) + " + " + str(numbers[j]) + " + "
-                        + str(numbers[k]) + "\n")
+                        + str(numbers[k]) + " in " + str(iterations) +
+                        " iterations\n")
                     stdout.write(
                         str(numbers[i] * numbers[j] * numbers[k]) + "\n")
                     return
