@@ -22,7 +22,12 @@ def main(argv, stdin, stdout, stderr):
         sys.exit(1)
 
     module = __import__("day" + str(day))
-    getattr(module, "main")(argv, stdin, stdout, stderr)
+
+    if stdin.isatty():
+        with open(f"day{day}/input.txt") as input_file:
+            getattr(module, "main")(argv, input_file, stdout, stderr)
+    else:
+        getattr(module, "main")(argv, stdin, stdout, stderr)
 
 
 main(sys.argv, sys.stdin, sys.stdout, sys.stderr)
