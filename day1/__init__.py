@@ -47,10 +47,8 @@ def part1(stdin, stdout, stderr):
 
         try:
             numbers.index(pair)
-            stderr.write(
-                str(number) + " + " + str(pair) + " in " +
-                str(iterations) + " iterations\n")
-            stdout.write(str(number * pair) + "\n")
+            stderr.write(f"{number} + {pair} in {iterations} iterations\n")
+            stdout.write(f"{number * pair}\n")
             return
         except ValueError:
             numbers.append(number)
@@ -72,12 +70,9 @@ def part2(stdin, stdout, stderr):
             iterations += 1
             try:
                 k = numbers.index(2020 - numbers[i] - numbers[j])
-                stderr.write(
-                    str(numbers[i]) + " + " + str(numbers[j]) + " + "
-                    + str(numbers[k]) + " in " + str(iterations) +
-                    " iterations\n")
-                stdout.write(
-                    str(numbers[i] * numbers[j] * numbers[k]) + "\n")
+                stderr.write(f"{numbers[i]} + {numbers[j]} + {numbers[k]} in "
+                             + f"{iterations} iterations\n")
+                stdout.write(f"{numbers[i] * numbers[j] * numbers[k]}\n")
                 return
             except ValueError:
                 pass
