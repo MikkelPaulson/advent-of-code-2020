@@ -17,7 +17,7 @@ def main(argv, stdin, stdout, stderr):
 
     day = int(sys.argv[1])
 
-    if day < 1 or day > 1:
+    if day < 1 or day > 25:
         print(f"Invalid day: {day}")
         sys.exit(1)
 
