@@ -30,7 +30,11 @@ def main(argv, stdin, stdout, stderr):
         stderr.write(f"Invalid part: {part}\n")
         return 1
 
-    module = __import__(f"day{day}")
+    try:
+        module = __import__(f"day{day}")
+    except ModuleNotFoundError:
+        stderr.write(f"Day {day} does not yet have a solution.\n")
+        return 1
 
     try:
         if stdin.isatty():
