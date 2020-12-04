@@ -23,13 +23,7 @@ def part1(stdin, stdout, stderr):
     Treat cid as optional. In your batch file, how many passports are valid?
     """
 
-    passports = [
-        dict(
-            x.split(":")
-            for x in re.split(r"[\n ]", y)
-        )
-        for y in stdin.read().strip().split("\n\n")
-    ]
+    passports = parse(stdin)
 
     valid_passports = 0
     required_keys = ("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid")
@@ -42,8 +36,20 @@ def part1(stdin, stdout, stderr):
         return True
 
     for passport in passports:
-        stderr.write(f"{passport}")
+        stderr.write(f"{passport}\n")
         if validate(passport):
             valid_passports += 1
 
     stdout.write(f"{valid_passports}\n")
+
+
+def parse(stdin):
+    """Parse a raw passport input."""
+
+    return [
+        dict(
+            x.split(":")
+            for x in re.split(r"[\n ]", y)
+        )
+        for y in stdin.read().strip().split("\n\n")
+    ]
