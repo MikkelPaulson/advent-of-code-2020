@@ -10,18 +10,48 @@ def part1(stdin, stdout, stderr):
     tickets = parse(stdin)
     stderr.write(f"{tickets}\n")
 
-    max_ticket = max([
-        row * 8 + seat
-        for (row, seat) in tickets
-    ])
+    max_ticket = max(seat_ids(tickets))
 
     stdout.write(f"{max_ticket}\n")
 
 
+def part2(stdin, stdout, stderr):
+    """
+    It's a completely full flight, so your seat should be the only missing
+    boarding pass in your list. However, there's a catch: some of the seats at
+    the very front and back of the plane don't exist on this aircraft, so
+    they'll be missing from your list as well.
+
+    Your seat wasn't at the very front or back, though; the seats with IDs +1
+    and -1 from yours will be in your list.
+
+    What is the ID of your seat?
+    """
+
+    seats = sorted(seat_ids(parse(stdin)))
+
+    for i in range(len(seats) - 1):
+        stderr.write(
+            f"{i}: {seats[i + 1]} - {seats[i]} = {seats[i + 1] - seats[i]}\n")
+
+        if seats[i + 1] - seats[i] == 2:
+            stdout.write(f"{seats[i] + 1}\n")
+            return
+
+    raise Exception("No matches found.")
+
+
+def seat_ids(tickets):
+    """Convert an array of (row, seat) tuples to seat IDs."""
+
+    return [
+        row * 8 + seat
+        for (row, seat) in tickets
+    ]
+
+
 def parse(stdin):
-    """
-    Parse "FBFBBFFRLR" to "0101100101", then to (44, 5)
-    """
+    """Parse "FBFBBFFRLR" to "0101100101", then to (44, 5)."""
 
     return [
         (
