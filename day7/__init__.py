@@ -69,11 +69,11 @@ def parse_rule(line):
 
     container, content_raw = line.split(" bags contain ")
     if content_raw == 'no other bags.':
-        contents = set()
+        contents = {}
     else:
-        contents = set(
-            re.sub(r"[0-9]+ ([a-z ]+) bags?\.?", r"\1", bag_raw)
-            for bag_raw in content_raw.split(", ")
-        )
+        contents = {
+            match[1]: int(match[0])
+            for match in re.findall(r"([0-9]+) ([a-z ]+) bags?", content_raw)
+        }
 
     return container, contents
