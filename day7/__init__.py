@@ -29,6 +29,34 @@ def part1(stdin, stdout, stderr):
     stdout.write(f"{count - 1}\n")
 
 
+def part2(stdin, stdout, stderr):
+    """
+    How many individual bags are required inside your single shiny gold bag?
+    """
+
+    containers = parse(stdin)
+
+    total = 0
+    search = {"shiny gold": 1}
+    while len(search) > 0:
+        total += sum(search.values())
+        stderr.write(f"{total} : {search}\n")
+
+        new_search = collections.defaultdict(int)
+        for container, total_count in search.items():
+            for bag, count in containers[container].items():
+                new_search[bag] += count * total_count
+        search = new_search
+
+        # search = {
+        #     x: y * count
+        #     for container, count in search.items()
+        #     for x, y in containers[container].items()
+        # }
+
+    stdout.write(f"{total - 1}\n")
+
+
 def flip(containers):
     """
     Invert the input so that instead of representing the containers, we
