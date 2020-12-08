@@ -1,13 +1,32 @@
 """https://adventofcode.com/2020/day/8"""
 
 
-def part1(stdin, stdout, stderr):
+def part1(stdin, stdout, _stderr):
     """
     Run your copy of the boot code. Immediately before any instruction is
     executed a second time, what value is in the accumulator?
     """
 
     commands = parse(stdin)
+    acc, _ = run(commands)
+    stdout.write(f"{acc}\n")
+
+
+def parse(stdin):
+    """
+    Parse an input program into an array of tuples.
+    """
+
+    return [
+        tuple(line.split(" ")) for line in stdin.read().strip().split("\n")
+    ]
+
+
+def run(commands):
+    """
+    Execute an input program. Returns the acc value and a boolean indicating if
+    the program exited cleanly or encountered a loop.
+    """
 
     run_count = set()
     acc = 0
@@ -24,17 +43,7 @@ def part1(stdin, stdout, stderr):
         else:
             line += 1
 
-        stderr.write(f"{line} {acc} {commands[line][0]} {commands[line][1]}\n")
+        if line >= len(commands):
+            return acc, True
 
-    stdout.write(f"{acc}\n")
-
-
-def parse(stdin):
-    """
-    Parse a rule sets into a dict of arrays. Each element is a bag type, each
-    value represents all bags that that type can contain.
-    """
-
-    return [
-        tuple(line.split(" ")) for line in stdin.read().strip().split("\n")
-    ]
+    return acc, False
