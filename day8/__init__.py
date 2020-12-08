@@ -12,13 +12,46 @@ def part1(stdin, stdout, _stderr):
     stdout.write(f"{acc}\n")
 
 
+def part2(stdin, stdout, stderr):
+    """
+    Fix the program so that it terminates normally by changing exactly one jmp
+    (to nop) or nop (to jmp). What is the value of the accumulator after the
+    program terminates?
+    """
+
+    def flip(commands, index):
+        if commands[index][0] == 'nop':
+            commands[index][0] = 'jmp'
+            return True
+
+        if commands[index][0] == 'jmp':
+            commands[index][0] = 'nop'
+            return True
+
+        return False
+
+    commands = parse(stdin)
+    for i, _ in enumerate(commands):
+        if flip(commands, i):
+            acc, success = run(commands)
+            stderr.write(f"{i} {acc} {commands[i]} {success}\n")
+
+            if success:
+                stdout.write(f"{acc}\n")
+                return
+
+            flip(commands, i)
+
+    raise Exception("No successful code paths found.")
+
+
 def parse(stdin):
     """
     Parse an input program into an array of tuples.
     """
 
     return [
-        tuple(line.split(" ")) for line in stdin.read().strip().split("\n")
+        line.split(" ") for line in stdin.read().strip().split("\n")
     ]
 
 
