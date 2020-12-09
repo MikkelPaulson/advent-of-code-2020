@@ -1,7 +1,7 @@
 """https://adventofcode.com/2020/day/8"""
 
 
-def part1(stdin, stdout, _stderr):
+def part1(stdin, _stderr):
     """
     Run your copy of the boot code. Immediately before any instruction is
     executed a second time, what value is in the accumulator?
@@ -9,10 +9,10 @@ def part1(stdin, stdout, _stderr):
 
     commands = parse(stdin)
     acc, _ = run(commands)
-    stdout.write(f"{acc}\n")
+    return str(acc)
 
 
-def part2(stdin, stdout, stderr):
+def part2(stdin, stderr):
     """
     Fix the program so that it terminates normally by changing exactly one jmp
     (to nop) or nop (to jmp). What is the value of the accumulator after the
@@ -37,8 +37,7 @@ def part2(stdin, stdout, stderr):
             stderr.write(f"{i} {acc} {commands[i]} {success}\n")
 
             if success:
-                stdout.write(f"{acc}\n")
-                return
+                return str(acc)
 
             flip(commands, i)
 

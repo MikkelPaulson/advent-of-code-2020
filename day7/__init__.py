@@ -4,7 +4,7 @@ import collections
 import re
 
 
-def part1(stdin, stdout, stderr):
+def part1(stdin, stderr):
     """
     You have a shiny gold bag. If you wanted to carry it in at least one
     other bag, how many different bag colors would be valid for the
@@ -26,10 +26,10 @@ def part1(stdin, stdout, stderr):
         )
 
     stderr.write(f"{options}\n")
-    stdout.write(f"{count - 1}\n")
+    return str(count - 1)
 
 
-def part2(stdin, stdout, stderr):
+def part2(stdin, stderr):
     """
     How many individual bags are required inside your single shiny gold bag?
     """
@@ -54,7 +54,7 @@ def part2(stdin, stdout, stderr):
         #     for x, y in containers[container].items()
         # }
 
-    stdout.write(f"{total - 1}\n")
+    return str(total - 1)
 
 
 def flip(containers):

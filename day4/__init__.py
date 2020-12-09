@@ -3,7 +3,7 @@
 import re
 
 
-def part1(stdin, stdout, stderr):
+def part1(stdin, stderr):
     """
     ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
     byr:1937 iyr:2017 cid:147 hgt:183cm
@@ -39,10 +39,10 @@ def part1(stdin, stdout, stderr):
         if validate(passport):
             valid_passports += 1
 
-    stdout.write(f"{valid_passports}\n")
+    return str(valid_passports)
 
 
-def part2(stdin, stdout, stderr):
+def part2(stdin, stderr):
     """
     byr (Birth Year) - four digits; at least 1920 and at most 2002.
     iyr (Issue Year) - four digits; at least 2010 and at most 2020.
@@ -89,7 +89,7 @@ def part2(stdin, stdout, stderr):
         if validate(passport):
             valid_passports += 1
 
-    stdout.write(f"{valid_passports}\n")
+    return str(valid_passports)
 
 
 def parse(stdin):

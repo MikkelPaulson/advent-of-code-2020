@@ -1,7 +1,7 @@
 """https://adventofcode.com/2020/day/8"""
 
 
-def part1(stdin, stdout, stderr, preamble_size=25):
+def part1(stdin, stderr, preamble_size=25):
     """
     The first step of attacking the weakness in the XMAS data is to find the
     first number in the list (after the preamble) which is not the sum of two
@@ -20,8 +20,7 @@ def part1(stdin, stdout, stderr, preamble_size=25):
     data = parse(stdin)
     for i in range(preamble_size, len(data)):
         if not is_valid(data[i], data[i - preamble_size:i]):
-            stdout.write(f"{data[i]}\n")
-            return
+            return str(data[i])
 
     raise Exception("No invalid values found.")
 

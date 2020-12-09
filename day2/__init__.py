@@ -4,7 +4,7 @@ import os
 import subprocess
 
 
-def part1(stdin, stdout, stderr):
+def part1(stdin, stderr):
     """
     Each line gives the password policy and then the password. The password
     policy indicates the lowest and highest number of times a given letter must
@@ -14,10 +14,10 @@ def part1(stdin, stdout, stderr):
     How many passwords are valid according to their policies?
     """
 
-    gawk("part1.gawk", stdin, stdout, stderr)
+    return gawk("part1.gawk", stdin, stderr)
 
 
-def part2(stdin, stdout, stderr):
+def part2(stdin, stderr):
     """
     Each policy actually describes two positions in the password, where 1 means
     the first character, 2 means the second character, and so on. (Be careful;
@@ -29,16 +29,21 @@ def part2(stdin, stdout, stderr):
     policies?
     """
 
-    gawk("part2.gawk", stdin, stdout, stderr)
+    return gawk("part2.gawk", stdin, stderr)
 
 
-def gawk(script, stdin, stdout, stderr):
+def gawk(script, stdin, stderr):
     """Execute a gawk command in the current directory."""
 
-    subprocess.run("gawk -f " + os.path.dirname(os.path.realpath(__file__))
-                   + "/" + script,
-                   stdin=stdin,
-                   stdout=stdout,
-                   stderr=stderr,
-                   check=True,
-                   shell=True)
+    command = f"gawk -f {os.path.dirname(os.path.realpath(__file__))}/{script}"
+
+    stderr.write(f"{command}\n")
+    result = subprocess.run(
+        command,
+        stdin=stdin,
+        capture_output=True,
+        check=True,
+        shell=True
+    )
+
+    return result.stdout.decode().strip()

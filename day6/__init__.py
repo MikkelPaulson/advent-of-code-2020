@@ -1,7 +1,7 @@
 """https://adventofcode.com/2020/day/6"""
 
 
-def part1(stdin, stdout, stderr):
+def part1(stdin, stderr):
     """
     For each group, count the number of questions to which anyone answered
     "yes". What is the sum of those counts?
@@ -13,10 +13,10 @@ def part1(stdin, stdout, stderr):
     ]
 
     stderr.write(f"{totals}\n")
-    stdout.write(f"{sum(totals)}\n")
+    return str(sum(totals))
 
 
-def part2(stdin, stdout, stderr):
+def part2(stdin, stderr):
     """
     For each group, count the number of questions to which everyone answered
     "yes". What is the sum of those counts?
@@ -28,7 +28,7 @@ def part2(stdin, stdout, stderr):
     ]
 
     stderr.write(f"{intersections}\n")
-    stdout.write(f"{sum(intersections)}\n")
+    return str(sum(intersections))
 
 
 def parse(stdin):

@@ -3,7 +3,7 @@
 import array
 
 
-def part1(stdin, stdout, stderr):
+def part1(stdin, stderr):
     """Find two numbers that sum to 2020, then multiply them."""
 
     numbers = array.array('i')
@@ -17,15 +17,14 @@ def part1(stdin, stdout, stderr):
         try:
             numbers.index(pair)
             stderr.write(f"{number} + {pair} in {iterations} iterations\n")
-            stdout.write(f"{number * pair}\n")
-            return
+            return str(number * pair)
         except ValueError:
             numbers.append(number)
 
     raise Exception("No matches found.")
 
 
-def part2(stdin, stdout, stderr):
+def part2(stdin, stderr):
     """Find three numbers that sum to 2020, then multiply them."""
 
     numbers = array.array('i')
@@ -41,8 +40,7 @@ def part2(stdin, stdout, stderr):
                 k = numbers.index(2020 - numbers[i] - numbers[j])
                 stderr.write(f"{numbers[i]} + {numbers[j]} + {numbers[k]} in "
                              + f"{iterations} iterations\n")
-                stdout.write(f"{numbers[i] * numbers[j] * numbers[k]}\n")
-                return
+                return str(numbers[i] * numbers[j] * numbers[k])
             except ValueError:
                 pass
 

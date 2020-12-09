@@ -1,7 +1,7 @@
 """https://adventofcode.com/2020/day/3"""
 
 
-def part1(stdin, stdout, stderr):
+def part1(stdin, stderr):
     """
     Starting at the top-left corner of your map and following a slope of right
     3 and down 1, how many trees would you encounter?
@@ -15,10 +15,10 @@ def part1(stdin, stdout, stderr):
             tree_count += 1
         y_pos += 1
 
-    stdout.write(f"{tree_count}\n")
+    return str(tree_count)
 
 
-def part2(stdin, stdout, stderr):
+def part2(stdin, stderr):
     """
     Determine the number of trees you would encounter if, for each of the
     following slopes, you start at the top-left corner and traverse the map all
@@ -48,7 +48,7 @@ def part2(stdin, stdout, stderr):
     for element in tree_counts[1:]:
         result *= element
 
-    stdout.write(f"{result}\n")
+    return str(result)
 
 
 def is_tree(x_step, y_step, line, y_pos, stderr):

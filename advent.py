@@ -36,21 +36,15 @@ def main(argv, stdin, stdout, stderr):
         stderr.write(f"Day {day} does not yet have a solution.\n")
         return 1
 
-    def missing(_stdin, _stdout, stderr):
-        stderr.write(f"Day {day} part {part} does not yet have a solution.\n")
-        return 1
-
     if stdin.isatty():
         with open(f"day{day}/input.txt") as input_file:
-            result = getattr(module, f"part{part}", missing)(
-                input_file, stdout, stderr)
+            result = getattr(module, f"part{part}")(
+                input_file, stderr)
     else:
-        result = getattr(module, f"part{part}", missing)(stdin, stdout, stderr)
+        result = getattr(module, f"part{part}")(stdin, stderr)
 
-    if result is None:
-        result = 0
-
-    return result
+    stdout.write(f"{result}\n")
+    return 0
 
 
 sys.exit(main(sys.argv, sys.stdin, sys.stdout, sys.stderr))
