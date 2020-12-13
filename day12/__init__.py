@@ -1,6 +1,7 @@
 """https://adventofcode.com/2020/day/12"""
 
 import io
+import math
 
 
 def part1(stdin, stderr):
@@ -33,6 +34,51 @@ def part1(stdin, stderr):
             heading = (heading + distance) % 360
 
         stderr.write(f"{x_pos},{y_pos}@{heading}\n")
+
+    return str(abs(x_pos) + abs(y_pos))
+
+
+def part2(stdin, stderr):
+    """
+    Figure out where the navigation instructions actually lead. What is the
+    Manhattan distance between that location and the ship's starting position?
+    """
+
+    directions = parse(stdin)
+    x_pos = 0
+    y_pos = 0
+    x_waypoint = 10
+    y_waypoint = 1
+
+    for (action, distance) in directions:
+        stderr.write(f"{action}{distance} ")
+
+        if action == 'N':
+            y_waypoint += distance
+        elif action == 'S':
+            y_waypoint -= distance
+        elif action == 'E':
+            x_waypoint += distance
+        elif action == 'W':
+            x_waypoint -= distance
+        elif action == 'R':
+            action = 'L'
+            distance *= -1
+
+        if action == 'L':
+            (x_waypoint, y_waypoint) = (
+                round(x_waypoint * math.cos(distance * math.pi/180)
+                      - y_waypoint * math.sin(distance * math.pi/180)),
+
+                round(x_waypoint * math.sin(distance * math.pi/180)
+                      + y_waypoint * math.cos(distance * math.pi/180)),
+            )
+
+        if action == 'F':
+            x_pos += x_waypoint * distance
+            y_pos += y_waypoint * distance
+
+        stderr.write(f"{x_pos},{y_pos} waypoint {x_waypoint},{y_waypoint}\n")
 
     return str(abs(x_pos) + abs(y_pos))
 
