@@ -5,10 +5,45 @@ import io
 
 def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
     """
-    Given your starting numbers, what will be the 2020th number spoken?
+    Consider the validity of the nearby tickets you scanned. What is your
+    ticket scanning error rate?
     """
 
     fields, tickets = parse(stdin)
+    groups = valid_groups(fields)
+    invalid_values = [
+        value
+        for ticket in tickets
+        for value in ticket.values() if not is_valid_value(value, groups)
+    ]
+
+    stderr.write(f"fields: {fields}\n")
+    stderr.write(f"concatenated groups: {groups}\n")
+    stderr.write(f"tickets: {tickets}\n")
+    stderr.write(f"invalid values: {invalid_values}\n")
+    return str(sum(invalid_values))
+
+
+def is_valid_value(value: int, groups: list) -> bool:
+    """
+    Is a given value valid for any range?
+    """
+
+    for (group_min, group_max) in groups:
+        if value < group_min:
+            return False
+
+        if value <= group_max:
+            return True
+
+    return False
+
+
+def valid_groups(fields: dict) -> list:
+    """
+    Concatenate a series of ranges, collapsing overlaps.
+    """
+
     all_groups = [j for i in fields.values() for j in i]
     all_groups.sort(key=lambda i: i[0])
 
@@ -26,24 +61,7 @@ def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
             group_max = group[1]
 
     groups.append((group_min, group_max))
-
-    invalid_values = list()
-    for ticket in tickets:
-        for value in ticket:
-            for (group_min, group_max) in groups:
-                if value < group_min:
-                    invalid_values.append(value)
-
-                if value <= group_max:
-                    break
-            else:
-                invalid_values.append(value)
-
-    stderr.write(f"fields: {fields}\n")
-    stderr.write(f"concatenated groups: {groups}\n")
-    stderr.write(f"tickets: {tickets}\n")
-    stderr.write(f"invalid values: {invalid_values}\n")
-    return str(sum(invalid_values))
+    return groups
 
 
 def parse(stdin: io.TextIOWrapper) -> tuple:
@@ -73,8 +91,10 @@ def parse(stdin: io.TextIOWrapper) -> tuple:
     #     for field, value in line.split(": ")
     # }
 
-    tickets = [[int(field) for field in my_ticket.split(",")]] + [
-        list(int(field) for field in ticket.split(","))
+    tickets = [
+        {key: int(field) for key, field in enumerate(my_ticket.split(","))}
+    ] + [
+        {key: int(field) for key, field in enumerate(ticket.split(","))}
         for ticket in other_tickets.splitlines()
     ]
 
