@@ -24,6 +24,91 @@ def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
     return str(sum(invalid_values))
 
 
+def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
+    """
+    Once you work out which field is which, look for the six fields on your
+    ticket that start with the word departure. What do you get if you multiply
+    those six values together?
+    """
+
+    def is_valid_ticket(ticket: list, groups: list) -> bool:
+        """Are all fields of the ticket valid for at least one range?"""
+
+        for value in ticket.values():
+            if not is_valid_value(value, groups):
+                return False
+
+        return True
+
+    def values_match_group(groups: list, values: list) -> bool:
+        """Do all values in the list match the given group?"""
+
+        return all(
+            any(
+                group_min <= value <= group_max
+                for group_min, group_max in groups
+            )
+            for value in values
+        )
+
+    fields, tickets = parse(stdin)
+    groups = valid_groups(fields)
+
+    stderr.write(f"All tickets: {tickets}\n")
+    stderr.write(f"All fields: {fields}\n")
+
+    my_ticket = tickets[0]
+    valid_tickets = [
+        ticket for ticket in tickets[1:] if is_valid_ticket(ticket, groups)
+    ]
+
+    unmatched_values = {
+        key: [ticket[key] for ticket in valid_tickets]
+        for key in my_ticket.keys()
+    }
+
+    possible_matches = {
+        index: set(
+            key
+            for key, groups in fields.items()
+            if values_match_group(groups, unmatched_values[index])
+        )
+        for index in my_ticket.keys()
+    }
+
+    matches = dict()
+
+    stderr.write(f"Unmatched values: {unmatched_values}\n")
+    stderr.write(f"Possible matches: {possible_matches}\n")
+
+    round_matches = None
+    while round_matches is None or len(round_matches) > 0:
+        round_matches = {
+            index: keys.pop()
+            for index, keys in possible_matches.items()
+            if len(keys) == 1
+        }
+
+        stderr.write(f"Round matches: {round_matches}\n")
+
+        for index, match in round_matches.items():
+            del possible_matches[index]
+
+            for possible_match in possible_matches.values():
+                possible_match.discard(match)
+
+            matches[index] = match
+
+    stderr.write(f"Matches: {matches}\n")
+
+    result = 1
+    for index, key in matches.items():
+        if key.startswith("departure "):
+            result *= my_ticket[index]
+
+    return result
+
+
 def is_valid_value(value: int, groups: list) -> bool:
     """
     Is a given value valid for any range?
