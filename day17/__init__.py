@@ -14,6 +14,17 @@ def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
     return str(len(cubes))
 
 
+def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
+    """
+    Starting with your given initial configuration, simulate six cycles in a
+    4-dimensional space. How many cubes are left in the active state after the
+    sixth cycle?
+    """
+
+    cubes = cycles(parse(stdin), 6, 4, stderr)
+    return str(len(cubes))
+
+
 def cycles(cubes: set, cycle_count: int, dimensions: int,
            stderr: io.TextIOWrapper) -> set:
     """
