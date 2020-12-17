@@ -10,9 +10,39 @@ def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
     many cubes are left in the active state after the sixth cycle?
     """
 
-    cubes, coord_min, coord_max = parse(stdin)
+    cubes = cycles(parse(stdin), 6, 3, stderr)
+    return str(len(cubes))
 
-    for i in range(6):
+
+def cycles(cubes: set, cycle_count: int, dimensions: int,
+           stderr: io.TextIOWrapper) -> set:
+    """
+    Apply a given number of cycles to the data set.
+    """
+
+    def map_dimensions(cubes: set, dimensions: int) -> (set, tuple, tuple):
+        """
+        Parse the flat x,y plane into a set of x,y,z,... tuples representing
+        the active cubes for an arbitrary number of dimensions.
+        """
+
+        result = set()
+
+        coord_min = (0,) * dimensions
+        coord_max = (0,) * dimensions
+        padding = (0,) * (dimensions - 2)
+
+        for coord in cubes:
+            new_coord = coord + padding
+            result.add(new_coord)
+            coord_min = tuple(map(min, zip(new_coord, coord_min)))
+            coord_max = tuple(map(max, zip(new_coord, coord_max)))
+
+        return result, coord_min, coord_max
+
+    cubes, coord_min, coord_max = map_dimensions(cubes, dimensions)
+
+    for i in range(cycle_count):
         stderr.write(f"Cycle {i}:\n")
         stderr.write(f"cubes: {cubes}\n")
         stderr.write(f"min: {coord_min}\n")
@@ -23,10 +53,12 @@ def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
     stderr.write(f"cubes: {cubes}\n")
     stderr.write(f"min: {coord_min}\n")
     stderr.write(f"max: {coord_max}\n")
-    return str(len(cubes))
+
+    return cubes
 
 
-def cycle(cubes, coord_min, coord_max) -> (set, tuple, tuple):
+def cycle(cubes: set, coord_min: tuple, coord_max: tuple) -> \
+        (set, tuple, tuple):
     """
     Run one cycle on a full data set, returning the new data set as well as the
     new min and max coordinates for future iterations.
@@ -36,11 +68,12 @@ def cycle(cubes, coord_min, coord_max) -> (set, tuple, tuple):
         if coord_max is None:
             coord_max = coord_min
 
-        return itertools.product(
-            range(coord_min[0] - 1, coord_max[0] + 2),
-            range(coord_min[1] - 1, coord_max[1] + 2),
-            range(coord_min[2] - 1, coord_max[2] + 2),
+        ranges = list(
+            range(coord_min[i] - 1, coord_max[i] + 2)
+            for i, _ in enumerate(coord_min)
         )
+
+        return itertools.product(*ranges)
 
     def calc_state(cubes, coord) -> bool:
         neighbors = 0
@@ -63,21 +96,15 @@ def cycle(cubes, coord_min, coord_max) -> (set, tuple, tuple):
     return new_cubes, coord_min, coord_max
 
 
-def parse(stdin: io.TextIOWrapper) -> (set, tuple, tuple):
+def parse(stdin: io.TextIOWrapper) -> set:
     """
-    Parse the input into a set of x,y,z tuples representing the active cubes.
+    Parse the input into a set of x,y,z,... tuples representing the active
+    cubes for an arbitrary number of dimensions.
     """
 
-    result = set()
-
-    coord_min = (0, 0, 0)
-    coord_max = (0, 0, 0)
-
-    for y_pos, line in enumerate(stdin.read().strip().splitlines()):
-        for x_pos, char in enumerate(line):
-            if char == '#':
-                coord = (x_pos, y_pos, 0)
-                result.add(coord)
-                coord_max = tuple(map(max, zip(coord, coord_max)))
-
-    return result, coord_min, coord_max
+    return set(
+        (x, y)
+        for y, line in enumerate(stdin.read().strip().splitlines())
+        for x, char in enumerate(line)
+        if char == '#'
+    )
