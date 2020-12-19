@@ -21,14 +21,53 @@ def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
         while len(expression) > 1:
             lhs, oper, rhs = expression[0:3]
 
-            if oper == '+':
+            if oper == "+":
                 result = lhs + rhs
-            elif oper == '*':
+            elif oper == "*":
                 result = lhs * rhs
             else:
                 raise Exception(f"Invalid operator: {oper}")
 
             expression[0:3] = [result]
+
+        return expression[0]
+
+    total = 0
+    expressions = parse(stdin)
+    for expression in expressions:
+        stderr.write(f"{expression} = ")
+        result = evaluate(expression)
+        stderr.write(f"{result}\n")
+        total += result
+
+    return str(total)
+
+
+def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
+    """
+    What do you get if you add up the results of evaluating the homework
+    problems using these new rules?
+    """
+
+    def evaluate(expression: list) -> int:
+        for i, element in enumerate(expression):
+            if isinstance(element, list):
+                expression[i] = evaluate(element)
+
+        while "+" in expression:
+            index = expression.index("+")
+            lhs, _, rhs = expression[index-1:index+2]
+            expression[index-1:index+2] = [lhs + rhs]
+
+        while "*" in expression:
+            index = expression.index("*")
+            lhs, _, rhs = expression[index-1:index+2]
+            expression[index-1:index+2] = [lhs * rhs]
+
+        if len(expression) != 1:
+            raise Exception(
+                f"Expected expression to have 1 element, got {expression}"
+            )
 
         return expression[0]
 
