@@ -6,31 +6,10 @@ import re
 
 def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
     """
-    Before you can help with the homework, you need to understand it yourself.
-    Evaluate the expression on each line of the homework; what is the sum of
-    the resulting values?
+    How many messages completely match rule 0?
     """
 
-    def compile_rule(rules: dict, index: int) -> str:
-        if isinstance(rules[index], str):
-            return rules[index]
-
-        pattern = "|".join([
-            "".join(map(lambda i: compile_rule(rules, i), options))
-            for options in rules[index]
-        ])
-
-        if len(rules[index]) > 1:
-            pattern = f"({pattern})"
-
-        print(f"{index}: {pattern}")
-
-        rules[index] = pattern
-        return pattern
-
     rules, messages = parse(stdin)
-    stderr.write(f"{rules}\n")
-    stderr.write(f"{messages}\n")
     stderr.write(f"{compile_rule(rules, 0)}\n")
 
     pattern = re.compile(compile_rule(rules, 0))
@@ -38,6 +17,56 @@ def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
         lambda message: pattern.fullmatch(message) is not None,
         messages
     ))))
+
+
+def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
+    """
+    After updating rules 8 and 11, how many messages completely match rule 0?
+    """
+
+    rules, messages = parse(stdin)
+    rules[8] = [[42], [42, 8]]
+    rules[11] = [[42, 31], [42, 11, 31]]
+    stderr.write(f"{compile_rule(rules, 0)}\n")
+
+    pattern = re.compile(compile_rule(rules, 0))
+    return str(len(list(filter(
+        lambda message: pattern.fullmatch(message) is not None,
+        messages
+    ))))
+
+
+def compile_rule(rules: dict, index: int) -> str:
+    """
+    Compule a rule based on all referenced rules. Hard-coded to avoid the
+    circular reference in the new rules 8 and 11.
+    """
+
+    if isinstance(rules[index], str):
+        return rules[index]
+
+    if index == 8 and len(rules[8]) > 1:
+        rules[index] = f"({compile_rule(rules, 42)})+"
+        return rules[index]
+    if index == 11 and len(rules[11]) > 1:
+        rules[index] = "(" + "|".join([
+            f"({compile_rule(rules, 42)})" + "{" + str(i) + "}"
+            f"({compile_rule(rules, 31)})" + "{" + str(i) + "}"
+            for i in range(1, 10)
+        ]) + ")"
+
+        return rules[index]
+
+    pattern = "|".join([
+        "".join(map(lambda i: compile_rule(rules, i), options))
+        for options in rules[index]
+    ])
+
+    if len(rules[index]) > 1:
+        pattern = f"({pattern})"
+
+    rules[index] = pattern
+    return pattern
 
 
 def parse(stdin: io.TextIOWrapper) -> list:
