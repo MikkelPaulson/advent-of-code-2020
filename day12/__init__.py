@@ -4,7 +4,7 @@ import io
 import math
 
 
-def part1(stdin, stderr):
+def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     Figure out where the navigation instructions lead. What is the Manhattan
     distance between that location and the ship's starting position?
@@ -35,10 +35,10 @@ def part1(stdin, stderr):
 
         stderr.write(f"{x_pos},{y_pos}@{heading}\n")
 
-    return str(abs(x_pos) + abs(y_pos))
+    return abs(x_pos) + abs(y_pos)
 
 
-def part2(stdin, stderr):
+def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     Figure out where the navigation instructions actually lead. What is the
     Manhattan distance between that location and the ship's starting position?
@@ -80,7 +80,7 @@ def part2(stdin, stderr):
 
         stderr.write(f"{x_pos},{y_pos} waypoint {x_waypoint},{y_waypoint}\n")
 
-    return str(abs(x_pos) + abs(y_pos))
+    return abs(x_pos) + abs(y_pos)
 
 
 def parse(stdin: io.TextIOWrapper) -> list:

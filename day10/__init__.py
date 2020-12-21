@@ -1,7 +1,9 @@
 """https://adventofcode.com/2020/day/10"""
 
+import io
 
-def part1(stdin, stderr):
+
+def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     Find a chain that uses all of your adapters to connect the charging outlet
     to your device's built-in adapter and count the joltage differences between
@@ -22,10 +24,10 @@ def part1(stdin, stderr):
 
     result = gap_1_count * (gap_3_count + 1)
     stderr.write(f"{gap_1_count} * {gap_3_count + 1} = {result}\n")
-    return str(result)
+    return result
 
 
-def part2(stdin, stderr):
+def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     What is the total number of distinct ways you can arrange the adapters to
     connect the charging outlet to your device?
@@ -52,7 +54,7 @@ def part2(stdin, stderr):
             last_3 = index
         stderr.write("\n")
 
-    return str(combinations)
+    return combinations
 
 
 def parse(stdin):

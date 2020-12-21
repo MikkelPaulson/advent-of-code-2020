@@ -1,7 +1,9 @@
 """https://adventofcode.com/2020/day/9"""
 
+import io
 
-def part1(stdin, stderr, preamble_size=25):
+
+def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     The first step of attacking the weakness in the XMAS data is to find the
     first number in the list (after the preamble) which is not the sum of two
@@ -10,10 +12,10 @@ def part1(stdin, stderr, preamble_size=25):
     """
 
     data = parse(stdin)
-    return str(get_invalid(data, stderr, preamble_size))
+    return get_invalid(data, stderr, 25)
 
 
-def part2(stdin, stderr, preamble_size=25):
+def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     The final step in breaking the XMAS encryption relies on the invalid number
     you just found: you must find a contiguous set of at least two numbers in
@@ -22,7 +24,7 @@ def part2(stdin, stderr, preamble_size=25):
 
     data = parse(stdin)
 
-    target = get_invalid(data, stderr, preamble_size)
+    target = get_invalid(data, stderr, 25)
     window_start = 0
     window_end = 2
     window_sum = sum(data[window_start:window_end])
@@ -40,8 +42,8 @@ def part2(stdin, stderr, preamble_size=25):
             window_start += 1
         else:
             stderr.write(f" = {target}\n")
-            return str(min(data[window_start:window_end]) +
-                       max(data[window_start:window_end]))
+            return (min(data[window_start:window_end]) +
+                    max(data[window_start:window_end]))
 
     raise Exception("No matches found.")
 

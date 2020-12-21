@@ -3,7 +3,7 @@
 import io
 
 
-def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
+def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     Consider the validity of the nearby tickets you scanned. What is your
     ticket scanning error rate?
@@ -21,10 +21,10 @@ def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
     stderr.write(f"concatenated groups: {groups}\n")
     stderr.write(f"tickets: {tickets}\n")
     stderr.write(f"invalid values: {invalid_values}\n")
-    return str(sum(invalid_values))
+    return sum(invalid_values)
 
 
-def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
+def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     Once you work out which field is which, look for the six fields on your
     ticket that start with the word departure. What do you get if you multiply
@@ -169,12 +169,6 @@ def parse(stdin: io.TextIOWrapper) -> tuple:
             tuple(int(i) for i in group.split("-"))
             for group in value.split(" or ")
         ]
-
-    # fields = {
-    #     field: (value.split(" or "))
-    #     for line in raw_fields.splitlines()
-    #     for field, value in line.split(": ")
-    # }
 
     tickets = [
         {key: int(field) for key, field in enumerate(my_ticket.split(","))}

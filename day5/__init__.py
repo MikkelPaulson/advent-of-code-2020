@@ -1,7 +1,9 @@
 """https://adventofcode.com/2020/day/5"""
 
+import io
 
-def part1(stdin, stderr):
+
+def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     As a sanity check, look through your list of boarding passes. What is the
     highest seat ID on a boarding pass?
@@ -12,10 +14,10 @@ def part1(stdin, stderr):
 
     max_ticket = max(seat_ids(tickets))
 
-    return str(max_ticket)
+    return max_ticket
 
 
-def part2(stdin, stderr):
+def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     It's a completely full flight, so your seat should be the only missing
     boarding pass in your list. However, there's a catch: some of the seats at
@@ -35,7 +37,7 @@ def part2(stdin, stderr):
             f"{i}: {seats[i + 1]} - {seats[i]} = {seats[i + 1] - seats[i]}\n")
 
         if seats[i + 1] - seats[i] == 2:
-            return str(seats[i] + 1)
+            return seats[i] + 1
 
     raise Exception("No matches found.")
 

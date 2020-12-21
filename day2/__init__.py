@@ -1,10 +1,11 @@
 """https://adventofcode.com/2020/day/2"""
 
+import io
 import os
 import subprocess
 
 
-def part1(stdin, stderr):
+def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     Each line gives the password policy and then the password. The password
     policy indicates the lowest and highest number of times a given letter must
@@ -17,7 +18,7 @@ def part1(stdin, stderr):
     return gawk("part1.gawk", stdin, stderr)
 
 
-def part2(stdin, stderr):
+def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     Each policy actually describes two positions in the password, where 1 means
     the first character, 2 means the second character, and so on. (Be careful;
@@ -32,7 +33,11 @@ def part2(stdin, stderr):
     return gawk("part2.gawk", stdin, stderr)
 
 
-def gawk(script, stdin, stderr):
+def gawk(
+        script: str,
+        stdin: io.TextIOWrapper,
+        stderr: io.TextIOWrapper
+) -> int:
     """Execute a gawk command in the current directory."""
 
     command = f"gawk -f {os.path.dirname(os.path.realpath(__file__))}/{script}"
@@ -46,4 +51,4 @@ def gawk(script, stdin, stderr):
         shell=True
     )
 
-    return result.stdout.decode().strip()
+    return int(result.stdout.decode().strip())

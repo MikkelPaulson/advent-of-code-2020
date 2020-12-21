@@ -1,9 +1,10 @@
 """https://adventofcode.com/2020/day/4"""
 
+import io
 import re
 
 
-def part1(stdin, stderr):
+def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
     byr:1937 iyr:2017 cid:147 hgt:183cm
@@ -39,10 +40,10 @@ def part1(stdin, stderr):
         if validate(passport):
             valid_passports += 1
 
-    return str(valid_passports)
+    return valid_passports
 
 
-def part2(stdin, stderr):
+def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     byr (Birth Year) - four digits; at least 1920 and at most 2002.
     iyr (Issue Year) - four digits; at least 2010 and at most 2020.
@@ -89,10 +90,10 @@ def part2(stdin, stderr):
         if validate(passport):
             valid_passports += 1
 
-    return str(valid_passports)
+    return valid_passports
 
 
-def parse(stdin):
+def parse(stdin: io.TextIOWrapper) -> list:
     """Parse a raw passport input."""
 
     return [

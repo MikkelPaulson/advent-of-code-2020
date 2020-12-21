@@ -1,7 +1,9 @@
 """https://adventofcode.com/2020/day/8"""
 
+import io
 
-def part1(stdin, _stderr):
+
+def part1(stdin: io.TextIOWrapper, _stderr: io.TextIOWrapper) -> int:
     """
     Run your copy of the boot code. Immediately before any instruction is
     executed a second time, what value is in the accumulator?
@@ -9,10 +11,10 @@ def part1(stdin, _stderr):
 
     commands = parse(stdin)
     acc, _ = run(commands)
-    return str(acc)
+    return acc
 
 
-def part2(stdin, stderr):
+def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     Fix the program so that it terminates normally by changing exactly one jmp
     (to nop) or nop (to jmp). What is the value of the accumulator after the
@@ -37,16 +39,16 @@ def part2(stdin, stderr):
             stderr.write(f"{i} {acc} {commands[i]} {success}\n")
 
             if success:
-                return str(acc)
+                return acc
 
             flip(commands, i)
 
     raise Exception("No successful code paths found.")
 
 
-def parse(stdin):
+def parse(stdin: io.TextIOWrapper) -> list:
     """
-    Parse an input program into an array of tuples.
+    Parse an input program into a list of lists.
     """
 
     return [

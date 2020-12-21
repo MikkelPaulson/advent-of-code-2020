@@ -6,7 +6,7 @@ import re
 SPLIT_PATTERN = re.compile(r"^([0-9]+)(.*)$")
 
 
-def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
+def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     Before you can help with the homework, you need to understand it yourself.
     Evaluate the expression on each line of the homework; what is the sum of
@@ -40,10 +40,10 @@ def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
         stderr.write(f"{result}\n")
         total += result
 
-    return str(total)
+    return total
 
 
-def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
+def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     What do you get if you add up the results of evaluating the homework
     problems using these new rules?
@@ -79,7 +79,7 @@ def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
         stderr.write(f"{result}\n")
         total += result
 
-    return str(total)
+    return total
 
 
 def parse(stdin: io.TextIOWrapper) -> list:

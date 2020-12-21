@@ -5,7 +5,7 @@ import io
 import re
 
 
-def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
+def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     Assemble the tiles into an image. What do you get if you multiply together
     the IDs of the four corner tiles?
@@ -17,10 +17,10 @@ def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
     grid = compute_grid(tiles)
     stderr.write(f"grid: {grid}\n")
 
-    return str(grid[0][0] * grid[0][-1] * grid[-1][0] * grid[-1][-1])
+    return grid[0][0] * grid[0][-1] * grid[-1][0] * grid[-1][-1]
 
 
-def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
+def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     How many # are not part of a sea monster?
     """
@@ -34,11 +34,11 @@ def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
     image = assemble_image(tiles, grid)
     sea_monsters = count_sea_monsters(image)
 
-    return str(len([
+    return len([
         char
         for line in image
         for char in line if char == '#'
-    ]) - sea_monsters * 15)
+    ]) - sea_monsters * 15
 
 
 def assemble_image(tiles: dict, grid: list) -> list:

@@ -4,7 +4,7 @@ import io
 import re
 
 
-def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
+def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     How many messages completely match rule 0?
     """
@@ -13,13 +13,13 @@ def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
     stderr.write(f"{compile_rule(rules, 0)}\n")
 
     pattern = re.compile(compile_rule(rules, 0))
-    return str(len(list(filter(
+    return len(list(filter(
         lambda message: pattern.fullmatch(message) is not None,
         messages
-    ))))
+    )))
 
 
-def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
+def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     After updating rules 8 and 11, how many messages completely match rule 0?
     """
@@ -30,10 +30,10 @@ def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
     stderr.write(f"{compile_rule(rules, 0)}\n")
 
     pattern = re.compile(compile_rule(rules, 0))
-    return str(len(list(filter(
+    return len(list(filter(
         lambda message: pattern.fullmatch(message) is not None,
         messages
-    ))))
+    )))
 
 
 def compile_rule(rules: dict, index: int) -> str:

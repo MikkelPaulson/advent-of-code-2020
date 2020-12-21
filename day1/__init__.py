@@ -1,9 +1,10 @@
 """https://adventofcode.com/2020/day/1"""
 
 import array
+import io
 
 
-def part1(stdin, stderr):
+def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """Find two numbers that sum to 2020, then multiply them."""
 
     numbers = array.array('i')
@@ -17,14 +18,14 @@ def part1(stdin, stderr):
         try:
             numbers.index(pair)
             stderr.write(f"{number} + {pair} in {iterations} iterations\n")
-            return str(number * pair)
+            return number * pair
         except ValueError:
             numbers.append(number)
 
     raise Exception("No matches found.")
 
 
-def part2(stdin, stderr):
+def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """Find three numbers that sum to 2020, then multiply them."""
 
     numbers = array.array('i')
@@ -40,7 +41,7 @@ def part2(stdin, stderr):
                 k = numbers.index(2020 - numbers[i] - numbers[j])
                 stderr.write(f"{numbers[i]} + {numbers[j]} + {numbers[k]} in "
                              + f"{iterations} iterations\n")
-                return str(numbers[i] * numbers[j] * numbers[k])
+                return numbers[i] * numbers[j] * numbers[k]
             except ValueError:
                 pass
 

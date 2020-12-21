@@ -4,7 +4,7 @@ import functools
 import io
 
 
-def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
+def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     Execute the initialization program. What is the sum of all values left in
     memory after it completes?
@@ -23,10 +23,10 @@ def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
                     memory[index] &= ~(1 << offset)
 
     stderr.write(f"{memory}\n")
-    return f"{sum(memory.values())}"
+    return sum(memory.values())
 
 
-def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
+def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     Execute the initialization program using an emulator for a version 2
     decoder chip. What is the sum of all values left in memory after it
@@ -77,7 +77,7 @@ def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
             for (index, value) in commands:
                 memory[(index | set_bits | set_mask) & clear_mask] = value
 
-    return str(sum(memory.values()))
+    return sum(memory.values())
 
 
 def parse(stdin: io.TextIOWrapper) -> list:

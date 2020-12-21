@@ -3,7 +3,7 @@
 import io
 
 
-def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
+def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     Given your starting numbers, what will be the 2020th number spoken?
     """
@@ -11,7 +11,7 @@ def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
     return nth(stdin, stderr, 2020)
 
 
-def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
+def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     Given your starting numbers, what will be the 30000000th number spoken?
     """
@@ -19,7 +19,7 @@ def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
     return nth(stdin, stderr, 30000000)
 
 
-def nth(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper, end: int) -> str:
+def nth(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper, end: int) -> int:
     """
     Brute-force the nth number spoken given an input set of numbers.
     """

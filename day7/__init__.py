@@ -1,10 +1,11 @@
 """https://adventofcode.com/2020/day/7"""
 
 import collections
+import io
 import re
 
 
-def part1(stdin, stderr):
+def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     You have a shiny gold bag. If you wanted to carry it in at least one
     other bag, how many different bag colors would be valid for the
@@ -26,10 +27,10 @@ def part1(stdin, stderr):
         )
 
     stderr.write(f"{options}\n")
-    return str(count - 1)
+    return count - 1
 
 
-def part2(stdin, stderr):
+def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     How many individual bags are required inside your single shiny gold bag?
     """
@@ -48,13 +49,7 @@ def part2(stdin, stderr):
                 new_search[bag] += count * total_count
         search = new_search
 
-        # search = {
-        #     x: y * count
-        #     for container, count in search.items()
-        #     for x, y in containers[container].items()
-        # }
-
-    return str(total - 1)
+    return total - 1
 
 
 def flip(containers):

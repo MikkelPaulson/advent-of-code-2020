@@ -1,7 +1,9 @@
 """https://adventofcode.com/2020/day/6"""
 
+import io
 
-def part1(stdin, stderr):
+
+def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     For each group, count the number of questions to which anyone answered
     "yes". What is the sum of those counts?
@@ -13,10 +15,10 @@ def part1(stdin, stderr):
     ]
 
     stderr.write(f"{totals}\n")
-    return str(sum(totals))
+    return sum(totals)
 
 
-def part2(stdin, stderr):
+def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     For each group, count the number of questions to which everyone answered
     "yes". What is the sum of those counts?
@@ -28,7 +30,7 @@ def part2(stdin, stderr):
     ]
 
     stderr.write(f"{intersections}\n")
-    return str(sum(intersections))
+    return sum(intersections)
 
 
 def parse(stdin):

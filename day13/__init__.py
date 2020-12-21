@@ -4,7 +4,7 @@ import io
 import math
 
 
-def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
+def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     What is the ID of the earliest bus you can take to the airport multiplied
     by the number of minutes you'll need to wait for that bus?
@@ -23,10 +23,10 @@ def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
 
     next_bus = min(departure_times, key=departure_times.get)
 
-    return f"{next_bus * departure_times[next_bus]}"
+    return next_bus * departure_times[next_bus]
 
 
-def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
+def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     What is the earliest timestamp such that all of the listed bus IDs depart
     at offsets matching their positions in the list?
@@ -64,7 +64,7 @@ def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
 
     stderr.write(f"Complete in {iterations} iterations\n")
 
-    return str(result)
+    return result
 
 
 def parse(stdin: io.TextIOWrapper) -> list:

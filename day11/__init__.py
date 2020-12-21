@@ -3,7 +3,7 @@
 import io
 
 
-def part1(stdin, stderr):
+def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     Simulate your seating area by applying the seating rules repeatedly until
     no seats change state. How many seats end up occupied?
@@ -58,10 +58,10 @@ def part1(stdin, stderr):
         new_seats = apply_round(seats)
         stderr.write(f"{new_seats}\n")
 
-    return str(len([seat for _, seat in seats.items() if seat == '#']))
+    return len([seat for _, seat in seats.items() if seat == '#'])
 
 
-def part2(stdin, stderr):
+def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     """
     Given the new visibility method and the rule change for occupied seats
     becoming empty, once equilibrium is reached, how many seats end up
@@ -134,7 +134,7 @@ def part2(stdin, stderr):
         new_seats = apply_round(seats)
         stderr.write(f"{new_seats}\n")
 
-    return str(len([seat for _, seat in seats.items() if seat == '#']))
+    return len([seat for seat in seats.values() if seat == '#'])
 
 
 def parse(stdin: io.TextIOWrapper) -> dict:
