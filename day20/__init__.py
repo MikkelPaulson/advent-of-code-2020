@@ -32,6 +32,8 @@ def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     stderr.write(f"grid: {grid}\n")
 
     image = assemble_image(tiles, grid)
+    stderr.write("\n".join(image) + "\n")
+
     sea_monsters = count_sea_monsters(image)
 
     return len([
