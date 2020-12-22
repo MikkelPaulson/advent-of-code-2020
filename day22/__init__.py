@@ -31,6 +31,52 @@ def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     return score(hands[0] if hands[0] else hands[1])
 
 
+def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
+    """
+    Defend your honor as Raft Captain by playing the small crab in a game of
+    Recursive Combat using the same two decks as before. What is the winning
+    player's score?
+    """
+
+    def play(hands: tuple, stderr: io.TextIOWrapper) -> int:
+        rounds = set()
+
+        while hands[0] and hands[1]:
+            key = (score(hands[0]), score(hands[1]))
+            if key in rounds:
+                return 0
+
+            rounds.add(key)
+            stderr.write(f"{hands}\n")
+
+            cards = (hands[0].pop(0), hands[1].pop(0))
+
+            if cards[0] <= len(hands[0]) and cards[1] <= len(hands[1]):
+                stderr.write("Recursing...\n")
+                winner = play((
+                    hands[0][:cards[0]],
+                    hands[1][:cards[1]],
+                ), stderr)
+                stderr.write(f"Player {winner + 1} wins the sub-game.\n")
+            elif cards[0] > cards[1]:
+                winner = 0
+            else:
+                winner = 1
+
+            stderr.write(f"Player {winner + 1} wins the round.\n")
+            hands[winner].append(cards[winner])
+            hands[winner].append(cards[1 - winner])
+
+        return 0 if hands[0] else 1
+
+    hands = parse(stdin)
+    winner = play(hands, stderr)
+
+    stderr.write(f"{hands}\n")
+
+    return score(hands[winner])
+
+
 def score(hand: list) -> int:
     """Calculate the score of a winning hand."""
 
