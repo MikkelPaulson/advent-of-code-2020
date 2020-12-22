@@ -21,6 +21,24 @@ def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     ])
 
 
+def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> str:
+    """
+    Time to stock your raft with supplies. What is your canonical dangerous
+    ingredient list?
+    """
+
+    foods = parse(stdin)
+    stderr.write(f"foods: {foods}\n")
+
+    allergens = identify_allergens(foods)
+    stderr.write(f"allergens: {allergens}\n")
+
+    return ",".join([
+        allergens[allergen]
+        for allergen in sorted(allergens.keys())
+    ])
+
+
 def identify_allergens(foods: list) -> dict:
     """
     Identify the allergens based on the known foods.
