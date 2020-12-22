@@ -32,15 +32,15 @@ def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     stderr.write(f"grid: {grid}\n")
 
     image = assemble_image(tiles, grid)
-    stderr.write("\n".join(image) + "\n")
+    paint_sea_monsters(image)
 
-    sea_monsters = count_sea_monsters(image)
+    stderr.write("\n".join(image) + "\n")
 
     return len([
         char
         for line in image
         for char in line if char == '#'
-    ]) - sea_monsters * 15
+    ])
 
 
 def assemble_image(tiles: dict, grid: list) -> list:
@@ -185,6 +185,22 @@ def count_sea_monsters(image: list) -> int:
             else:
                 count += 1
     return count
+
+
+def paint_sea_monsters(image: list):
+    """Paint the sea monsters with Os instead of #s."""
+    for row in range(len(image) - SEA_MONSTER_HEIGHT):
+        for col in range(len(image[0]) - SEA_MONSTER_WIDTH):
+            for row_offset, col_offset in SEA_MONSTER:
+                if image[row + row_offset][col + col_offset] != "#":
+                    break
+            else:
+                for row_offset, col_offset in SEA_MONSTER:
+                    image[row + row_offset] = (
+                        image[row + row_offset][:col + col_offset] +
+                        "O" +
+                        image[row + row_offset][col + col_offset + 1:]
+                    )
 
 
 def compute_grid(tiles: dict) -> list:
