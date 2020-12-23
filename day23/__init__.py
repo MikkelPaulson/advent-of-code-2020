@@ -27,35 +27,59 @@ def play(cups: list, rounds: int):
     Play the game for a specified number of rounds. Modifies cups in place.
     """
 
-    def play_round(cups: list, current_cup: int) -> int:
+    def play_round(edges: dict, current_cup: int) -> int:
         """
         Play a round of the cup game. Returns the new current cup.
         """
 
-        i = cups.index(current_cup)
-        cups_in_hand = cups[i+1:i+4]
-        del cups[i+1:i+4]
+        max_cup = len(edges)
+        print(f"current cup: {current_cup}")
 
+        cups_in_hand = [edges[current_cup]]
         while len(cups_in_hand) < 3:
-            cups_in_hand.append(cups.pop(0))
+            cups_in_hand.append(edges.pop(cups_in_hand[-1]))
+        edges[current_cup] = edges.pop(cups_in_hand[-1])
 
-        destination_cup = current_cup - 1
-        while destination_cup > 0:
-            try:
-                destination_index = cups.index(destination_cup)
-                break
-            except ValueError:
-                destination_cup -= 1
-        else:
-            destination_index = cups.index(max(cups))
+        print(f"cups in hand: {cups_in_hand}")
 
-        cups[destination_index + 1:destination_index + 1] = cups_in_hand
+        destination_cup = current_cup - 1 if current_cup != 1 else max_cup
+        while destination_cup in cups_in_hand:
+            destination_cup -= 1
+            if destination_cup < 1:
+                destination_cup = max_cup
 
-        return cups[(cups.index(current_cup) + 1) % len(cups)]
+        print(f"destination cup: {destination_cup}")
+
+        while cups_in_hand:
+            edges[cups_in_hand[-1]] = edges[destination_cup]
+            edges[destination_cup] = cups_in_hand.pop()
+
+        print(f"edges: {edges}")
+        print(f"cups: {edges_to_cups(edges)}")
+
+        return edges[current_cup]
+
+    def cups_to_edges(cups: list) -> dict:
+        edges = {cups[i]: cups[i + 1] for i in range(len(cups) - 1)}
+        edges[cups[-1]] = cups[0]
+        return edges
+
+    def edges_to_cups(edges: dict) -> list:
+        cups = [1]
+        index = edges[1]
+        while index != 1:
+            cups.append(index)
+            index = edges[index]
+        return cups
 
     current_cup = cups[0]
+
+    edges = cups_to_edges(cups)
+
     for _ in range(rounds):
-        current_cup = play_round(cups, current_cup)
+        current_cup = play_round(edges, current_cup)
+
+    cups[:] = edges_to_cups(edges)
 
 
 def parse(stdin: io.TextIOWrapper) -> list:
