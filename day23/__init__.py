@@ -22,6 +22,24 @@ def part1(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
     ))
 
 
+def part2(stdin: io.TextIOWrapper, stderr: io.TextIOWrapper) -> int:
+    """
+    Determine which two cups will end up immediately clockwise of cup 1. What
+    do you get if you multiply their labels together?
+    """
+
+    cups = parse(stdin)
+    cups += range(len(cups) + 1, 1000001)
+
+    play(cups, 10000000)
+
+    next_cups = [cups[cups.index(1) + i] % len(cups) for i in [1, 2]]
+    stderr.write(f"{next_cups[0]} * {next_cups[1]} = "
+                 f"{next_cups[0] * next_cups[1]}\n")
+
+    return next_cups[0] * next_cups[1]
+
+
 def play(cups: list, rounds: int):
     """
     Play the game for a specified number of rounds. Modifies cups in place.
@@ -33,14 +51,11 @@ def play(cups: list, rounds: int):
         """
 
         max_cup = len(edges)
-        print(f"current cup: {current_cup}")
 
         cups_in_hand = [edges[current_cup]]
         while len(cups_in_hand) < 3:
             cups_in_hand.append(edges.pop(cups_in_hand[-1]))
         edges[current_cup] = edges.pop(cups_in_hand[-1])
-
-        print(f"cups in hand: {cups_in_hand}")
 
         destination_cup = current_cup - 1 if current_cup != 1 else max_cup
         while destination_cup in cups_in_hand:
@@ -48,14 +63,9 @@ def play(cups: list, rounds: int):
             if destination_cup < 1:
                 destination_cup = max_cup
 
-        print(f"destination cup: {destination_cup}")
-
         while cups_in_hand:
             edges[cups_in_hand[-1]] = edges[destination_cup]
             edges[destination_cup] = cups_in_hand.pop()
-
-        print(f"edges: {edges}")
-        print(f"cups: {edges_to_cups(edges)}")
 
         return edges[current_cup]
 
